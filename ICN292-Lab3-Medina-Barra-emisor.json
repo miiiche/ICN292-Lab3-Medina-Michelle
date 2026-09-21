@@ -1,0 +1,84 @@
+{
+  "name": "ICN292-Lab3-Medina-Barra-emisor",
+  "nodes": [
+    {
+      "parameters": {},
+      "type": "n8n-nodes-base.manualTrigger",
+      "typeVersion": 1,
+      "position": [
+        0,
+        0
+      ],
+      "id": "9295e943-25c7-4eaa-ad8b-58609ea62440",
+      "name": "When clicking ‘Execute workflow’"
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "https://mmedinab.app.n8n.cloud/webhook/triage-devoluciones",
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "={{ JSON.stringify($json) }}",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.5,
+      "position": [
+        448,
+        0
+      ],
+      "id": "9cd5f07a-5d57-493d-95d4-d4e16c0edad8",
+      "name": "HTTP Request"
+    },
+    {
+      "parameters": {
+        "jsCode": "return [\n  { json: { \"id_solicitud\": \"DEV-1115\", \"sku\": \"AU-210\", \"unidades\": \"1\", \"monto\": \"19990\", \"dias_desde_compra\": \"3\", \"estado_producto\": \"sin_abrir\", \"email_cliente\": \"cliente1@example.cl\" } },\n  { json: { \"id_solicitud\": \"DEV-1116\", \"sku\": \"TE-330\", \"unidades\": \"2\", \"monto\": \"69980\", \"dias_desde_compra\": \"5\", \"estado_producto\": \"abierto_sin_uso\", \"email_cliente\": \"cliente2@example.cl\" } },\n  { json: { \"id_solicitud\": \"DEV-1117\", \"sku\": \"HV-050\", \"unidades\": \"1\", \"monto\": \"24990\", \"dias_desde_compra\": \"12\", \"estado_producto\": \"con_fallas\", \"email_cliente\": \"cliente3@example.cl\" } },\n  { json: { \"id_solicitud\": \"DEV-1118\", \"sku\": \"MW-150\", \"unidades\": \"1\", \"monto\": \"79990\", \"dias_desde_compra\": \"4\", \"estado_producto\": \"sin_abrir\", \"email_cliente\": \"cliente4@example.cl\" } },\n  { json: { \"id_solicitud\": \"DEV-1119\", \"sku\": \"PL-120\", \"unidades\": \"1\", \"monto\": \"45990\", \"dias_desde_compra\": \"25\", \"estado_producto\": \"danado_por_uso\", \"email_cliente\": \"cliente5@example.cl\" } },\n  { json: { \"id_solicitud\": \"DEV-1120\", \"sku\": \"AS-260\", \"unidades\": \"1\", \"monto\": \"89990\", \"dias_desde_compra\": \"2\", \"estado_producto\": \"con_fallas\", \"email_cliente\": \"cliente6@example.cl\" } },\n  { json: { \"id_solicitud\": \"DEV-1121\", \"sku\": \"LV-330\", \"unidades\": \"1\", \"monto\": \"289990\", \"dias_desde_compra\": \"9\", \"estado_producto\": \"sin_abrir\", \"email_cliente\": \"cliente7@example.cl\" } },\n  { json: { \"id_solicitud\": \"DEV-1122\", \"sku\": \"PL-120\", \"unidades\": \"1\", \"monto\": \"45990\", \"dias_desde_compra\": \"2\", \"estado_producto\": \"sin_abrir\", \"email_cliente\": \"cliente8@example.cl\" } },\n  { json: { \"id_solicitud\": \"DEV-1123\", \"sku\": \"AU-210\", \"unidades\": \"2\", \"monto\": \"39980\", \"dias_desde_compra\": \"15\", \"estado_producto\": \"danado_por_uso\", \"email_cliente\": \"cliente9@example.cl\" } },\n  { json: { \"id_solicitud\": \"DEV-1124\", \"sku\": \"HV-050\", \"unidades\": \"2\", \"monto\": \"49980\", \"dias_desde_compra\": \"1\", \"estado_producto\": \"abierto_sin_uso\", \"email_cliente\": \"cliente10@example.cl\" } },\n  { json: { \"id_solicitud\": \"DEV-1125\", \"sku\": \"TE-330\", \"unidades\": \"1\", \"monto\": \"34990\", \"dias_desde_compra\": \"22\", \"estado_producto\": \"sin_abrir\", \"email_cliente\": \"cliente11@example.cl\" } },\n  { json: { \"id_solicitud\": \"DEV-1126\", \"sku\": \"MW-150\", \"unidades\": \"1\", \"monto\": \"79990\", \"dias_desde_compra\": \"8\", \"estado_producto\": \"con_fallas\", \"email_cliente\": \"cliente12@example.cl\" } },\n  { json: { \"id_solicitud\": \"DEV-C01\", \"sku\": \"CB-010\", \"unidades\": \"1\", \"monto\": \"9990\", \"dias_desde_compra\": \"1\", \"estado_producto\": \"sin_abrir\", \"email_cliente\": \"control01@example.cl\" } },\n  { json: { \"id_solicitud\": \"DEV-C02\", \"sku\": \"LV-330\", \"unidades\": \"1\", \"monto\": \"289990\", \"dias_desde_compra\": \"2\", \"estado_producto\": \"sin_abrir\", \"email_cliente\": \"control02@example.cl\" } },\n  { json: { \"id_solicitud\": \"DEV-C03\", \"sku\": \"MW-150\", \"unidades\": \"1\", \"monto\": \"79990\", \"dias_desde_compra\": \"29\", \"estado_producto\": \"abierto_sin_uso\", \"email_cliente\": \"control03@example.cl\" } }\n];"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        224,
+        0
+      ],
+      "id": "1877a623-b01f-496a-ba98-ca40a941a143",
+      "name": "Code in JavaScript"
+    }
+  ],
+  "pinData": {},
+  "connections": {
+    "When clicking ‘Execute workflow’": {
+      "main": [
+        [
+          {
+            "node": "Code in JavaScript",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Code in JavaScript": {
+      "main": [
+        [
+          {
+            "node": "HTTP Request",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": false,
+  "settings": {
+    "executionOrder": "v1",
+    "binaryMode": "separate"
+  },
+  "versionId": "5bf16bdd-27d1-4caf-954b-4ad09416d360",
+  "meta": {
+    "instanceId": "8d33db8ac4705b0f7da457c8c5e6d4b87cbad06c2773bd0348192dc6306a2170"
+  },
+  "nodeGroups": [],
+  "id": "QVukEeNM8TTUHbUW",
+  "tags": []
+}

@@ -1,0 +1,95 @@
+{
+  "name": "ICN292-Lab3-Medina-Barra-resumen",
+  "nodes": [
+    {
+      "parameters": {
+        "rule": {
+          "interval": [
+            {}
+          ]
+        }
+      },
+      "type": "n8n-nodes-base.scheduleTrigger",
+      "typeVersion": 1.4,
+      "position": [
+        0,
+        0
+      ],
+      "id": "4447a204-131a-4c77-82a8-0f1f077f872c",
+      "name": "Schedule Trigger"
+    },
+    {
+      "parameters": {
+        "jsCode": "// Simulación de los registros procesados en la jornada\nconst solicitudes = [\n  { id: \"DEV-1115\", monto: 19990, ruta: \"APROBACION\" },\n  { id: \"DEV-1116\", monto: 69980, ruta: \"REVISION\" },\n  { id: \"DEV-1117\", monto: 24990, ruta: \"RECHAZO\" },\n  { id: \"DEV-1118\", monto: 79990, ruta: \"REVISION\" },\n  { id: \"DEV-1119\", monto: 45990, ruta: \"RECHAZO\" },\n  { id: \"DEV-1120\", monto: 89990, ruta: \"REVISION\" },\n  { id: \"DEV-1121\", monto: 289990, ruta: \"RECHAZO\" },\n  { id: \"DEV-1122\", monto: 45990, ruta: \"REVISION\" },\n  { id: \"DEV-1123\", monto: 39980, ruta: \"RECHAZO\" },\n  { id: \"DEV-1124\", monto: 49980, ruta: \"REVISION\" },\n  { id: \"DEV-1125\", monto: 34990, ruta: \"RECHAZO\" },\n  { id: \"DEV-1126\", monto: 79990, ruta: \"RECHAZO\" },\n  { id: \"DEV-C01\", monto: 9990, ruta: \"APROBACION\" },\n  { id: \"DEV-C02\", monto: 289990, ruta: \"REVISION\" },\n  { id: \"DEV-C03\", monto: 79990, ruta: \"RECHAZO\" }\n];\n\nlet res = {\n  total_solicitudes: solicitudes.length,\n  aprobadas_cant: 0, aprobadas_monto: 0,\n  revision_cant: 0, revision_monto: 0,\n  rechazo_cant: 0, rechazo_monto: 0,\n  monto_total_dia: 0\n};\n\nfor (let item of solicitudes) {\n  res.monto_total_dia += item.monto;\n  if (item.ruta === \"APROBACION\") {\n    res.aprobadas_cant++;\n    res.aprobadas_monto += item.monto;\n  } else if (item.ruta === \"REVISION\") {\n    res.revision_cant++;\n    res.revision_monto += item.monto;\n  } else if (item.ruta === \"RECHAZO\") {\n    res.rechazo_cant++;\n    res.rechazo_monto += item.monto;\n  }\n}\n\nres.tasa_aprobacion_automatica = ((res.aprobadas_cant / res.total_solicitudes) * 100).toFixed(2) + \"%\";\n\nreturn [{ json: res }];"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        224,
+        0
+      ],
+      "id": "9a3eb716-c89a-4bb8-98a8-e33afd078f40",
+      "name": "Consolidar Dia"
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "87ded670-d2d4-48dc-8d18-ae5a70fb880d",
+              "name": "mensaje",
+              "value": "={{ \"RESUMEN DIARIO DE DEVOLUCIONES\\n\" + \"- Solicitudes por ruta:\\n\" + \"  * Aprobación automática: \" + $json.aprobadas_cant + \" ($\" + $json.aprobadas_monto + \")\\n\" + \"  * Revisión bodega: \" + $json.revision_cant + \" ($\" + $json.revision_monto + \")\\n\" + \"  * Rechazadas: \" + $json.rechazo_cant + \" ($\" + $json.rechazo_monto + \")\\n\" + \"- Monto total del día: $\" + $json.monto_total_dia + \"\\n\" + \"- Tasa de aprobación automática: \" + $json.tasa_aprobacion_automatica }}",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.5,
+      "position": [
+        448,
+        0
+      ],
+      "id": "531c98fa-ddd2-4867-a157-99f8c9a781f5",
+      "name": "Notificar Resumen"
+    }
+  ],
+  "pinData": {},
+  "connections": {
+    "Schedule Trigger": {
+      "main": [
+        [
+          {
+            "node": "Consolidar Dia",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Consolidar Dia": {
+      "main": [
+        [
+          {
+            "node": "Notificar Resumen",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": false,
+  "settings": {
+    "executionOrder": "v1",
+    "binaryMode": "separate"
+  },
+  "versionId": "aaa5876d-a83b-49fb-98a1-d02c7bb6ac70",
+  "meta": {
+    "instanceId": "8d33db8ac4705b0f7da457c8c5e6d4b87cbad06c2773bd0348192dc6306a2170"
+  },
+  "nodeGroups": [],
+  "id": "nhNCyUk6oowIMHSM",
+  "tags": []
+}
